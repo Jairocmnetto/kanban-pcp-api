@@ -8,12 +8,18 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// CORS global
-app.use(cors());
+// CORS configurado com domínio do Netlify e localhost
+app.use(cors({
+  origin: [
+    'https://https://kanbanpcp.netlify.app/', // substitua pela URL real do seu site Netlify
+    'http://localhost:3000'
+  ]
+}));
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Conexão com PostgreSQL
+// Conexão com PostgreSQL via variável DATABASE_URL do Railway
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -68,14 +74,7 @@ app.put('/api/atividades/:id/status', async (req, res) => {
   }
 });
 
+// Inicia o servidor
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
-
-// CORS específico (se precisar restringir)
-app.use(cors({
-  origin: [
-    'https://seu-site.netlify.app', // Domínio do Netlify
-    'http://localhost:3000'           // Para testes locais
-  ]
-}));
