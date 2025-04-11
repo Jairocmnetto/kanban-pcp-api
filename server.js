@@ -8,13 +8,18 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// CORS configurado com domínio do Netlify e localhost
-app.use(cors({
+// Configuração de CORS:
+// Definimos as origens permitidas e habilitamos o preflight (OPTIONS)
+const corsOptions = {
   origin: [
-    'https://https://kanbanpcp.netlify.app/', // substitua pela URL real do seu site Netlify
-    'http://localhost:3000'
+    'https://kanbanpcp.netlify.app',  // sua URL Netlify correta
+    'http://localhost:3000',
+    'http://127.0.0.1:5500',
+    'http://localhost:5500'
   ]
-}));
+};
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
