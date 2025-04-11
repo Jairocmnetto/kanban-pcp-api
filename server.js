@@ -18,8 +18,8 @@ const corsOptions = {
     'http://localhost:5500'
   ]
 };
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+app.use(cors());            // libera tudo
+app.options('*', cors());   // libera preflight pra qualquer origem
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
